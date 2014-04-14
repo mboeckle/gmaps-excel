@@ -1,5 +1,5 @@
 var store = (function () {
-
+  
   var searchBox,
   infowindow,
   markers = [],
