@@ -14,20 +14,19 @@ var store = (function () {
     map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
     searchBox = new google.maps.places.SearchBox((input));
     store.listener();
+
   }, 
 
   listener = function() {
 
     google.maps.event.addListener(searchBox, 'places_changed', function() {
-
+        
         //search for places
         var places = searchBox.getPlaces(); 
-
-        //set null
         for (var i = 0, marker; marker = markers[i]; i++) {
           marker.setMap(null);
         }
-
+        
         //set markers zero 
         markers = [];
         $('.addaddress').empty();
@@ -36,21 +35,22 @@ var store = (function () {
         var bounds = new google.maps.LatLngBounds();
 
         for (var i = 0, place; place = places[i]; i++) {
-          
           store.create_marker(place);
-          
+
           //append to the table
           $('.addaddress').append('<tr><td>'+ place.name +'</td><td>'+ place.formatted_address +'</td></tr>');
           bounds.extend(place.geometry.location);
         }
+
         //set the map
         map.fitBounds(bounds);
-      });
+
+    });
   }, 
 
   create_marker = function(info) {
-    
-    //create a marker for each place.
+
+    //create a marker for each place
     var marker = new google.maps.Marker({ map: map, icon: customIcons.iconblue, title: info.name, position: info.geometry.location });
 
     //infowindow setup
@@ -59,12 +59,15 @@ var store = (function () {
       if (infowindow) {
         infowindow.close();
       }
+
       infowindow = new google.maps.InfoWindow({content: info.name});
-      infowindow.open(map, marker);  
-    });   
+      infowindow.open(map, marker);
+
+    });
 
     //push the marker
-    markers.push(marker); 
+    markers.push(marker);
+     
   }
   
   return {
